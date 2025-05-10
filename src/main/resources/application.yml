@@ -12,4 +12,4 @@ server:
     include-exception: true
     include-message: always
 imagekit:
-  private-key: ####
+  private-key: private_kTbgSn90Tcs/CikohjpO3uqxxIM=

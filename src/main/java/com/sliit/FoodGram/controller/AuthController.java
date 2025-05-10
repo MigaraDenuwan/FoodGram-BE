@@ -1,6 +1,7 @@
 package com.sliit.FoodGram.controller;
 
 import com.sliit.FoodGram.dto.LoginRequest;
+import com.sliit.FoodGram.dto.LoginResponse;
 import com.sliit.FoodGram.dto.RegisterRequest;
 import com.sliit.FoodGram.model.User;
 import com.sliit.FoodGram.service.AuthService;
@@ -44,23 +45,21 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> login(@RequestBody LoginRequest request, HttpSession session) {
+    public ResponseEntity<?> login(@RequestBody LoginRequest request, HttpSession session) {
         try {
             return authService.authenticate(request.email, request.password)
                     .map(user -> {
                         session.setAttribute("USER", user);
-                        Map<String, String> response = new HashMap<>();
-                        response.put("message", "Login successful");
-                        response.put("username", user.getUsername());
-                        response.put("email", user.getEmail());
-                        return ResponseEntity.ok(response);
+                        LoginResponse loginResponse = new LoginResponse(user.getId());
+                        return ResponseEntity.ok(loginResponse);
                     })
-                    .orElseGet(() -> ResponseEntity.status(401).body(Map.of("error", "Invalid credentials")));
+                    .orElseGet(() -> ResponseEntity.status(401).body((LoginResponse) Map.of("error", "Invalid credentials")));
         } catch (Exception e) {
             System.err.println("Login error: " + e.getMessage());
             return ResponseEntity.status(500).body(Map.of("error", "Server error during login"));
         }
     }
+
 
     @PostMapping("/logout")
     public ResponseEntity<Map<String, String>> logout(HttpSession session) {

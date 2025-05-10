@@ -26,7 +26,7 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**", "/api/posts/**", "/api/comments/**", "/api/profiles/**", "/api/stories/**").permitAll()
+                        .requestMatchers("/api/auth/**", "/api/posts/**", "/api/comments/**", "/api/profiles/**", "/api/stories/**","/api/learning-plans/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form.disable())
